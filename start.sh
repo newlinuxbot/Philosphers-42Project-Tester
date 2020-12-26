@@ -25,7 +25,7 @@ echo "[+] Test Type: $2\e[0m\n"
 
 if [ "$2" -eq 1 -o "$2" -eq 0 ];then
 
-    echo "[============[Testing philo_one]==============]"
+    echo "[============[Testing philo_one]==============]\n"
 
     target="philo_one"
     make -C "$1/$target" > /dev/null
@@ -35,17 +35,84 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
         exit
     fi
 
-    "$1/$target/$target" 4 310 200 100 > "./death_log_$target"
-    sleep 5
-    pkill $target
-    output=$(grep died -m 1 "./death_log_$target" | awk '{print $NF}')
-    if [ $output = "died" ];then
-        echo "\e[92m[+] Test #1 Succeded !\e[0m"
+    #TEST 1
+
+    # ("$1/$target/$target" 4 310 200 100 > "./log_$target")&
+    # sleep 5
+    # pkill $target
+    # output=$(grep died -m 1 "./log_$target" | awk '{print $NF}')
+    # if [ $output = "died" ];then
+    #     echo "\e[92m[+] Test #1 Succeded !\e[0m"
+    # else
+    #     echo "\e[91m[+] Test #1 Failed !\e[0m"
+    # fi
+    # rm -rf "./log_$target"
+    # #TEST 2
+
+    # echo "\e[92m[+] Test #2: Executing your program for 180 second, please wait...\e[0m"
+    # ("$1/$target/$target" 4 410 200 200 > /dev/null)&
+    # i=1
+    # error=0
+    # while [ $i -lt 180 ];do
+    #     printf "\r[%d...]" $i
+    #     pgrep $target > /dev/null
+    #     if [ "$?" -ne 0 ];then
+    #         echo "\r\e[91m[+] Test #2 Failed\e[0m"
+    #         error=1
+    #         break
+    #     fi
+    #     sleep 1
+    #     i=$(( $i + 1 ))
+    # done
+    # sleep 1
+    # if [ $error -eq 0 ];then
+    #     pkill $target
+    #     echo "\r\e[92m[+] Test #2 Succeded\e[0m"
+    # fi
+
+    # #TEST 3
+
+    # echo "\e[92m[+] Test #3: Executing your program for 180 second, please wait...\e[0m"
+    # ("$1/$target/$target" 5 800 200 200 > /dev/null)&
+    # i=1
+    # error=0
+    # while [ $i -lt 180 ];do
+    #     printf "\r[%d...]" $i
+    #     pgrep $target > /dev/null
+    #     if [ "$?" -ne 0 ];then
+    #         echo "\r\e[91m[+] Test #3 Failed\e[0m"
+    #         error=1
+    #         break
+    #     fi
+    #     sleep 1
+    #     i=$(( $i + 1 ))
+    # done
+    # sleep 1
+    # if [ $error -eq 0 ];then
+    #     pkill $target
+    #     echo "\r\e[92m[+] Test #3 Succeded\e[0m"
+    # fi
+
+    #TEST 4
+
+    #Turn into function and pass multiple arguments besides 7
+    echo "\e[92m[+] Test #4 on progress, please wait...\e[0m"
+    ("$1/$target/$target" 4 410 200 200 7 > "./log_$target")&
+    sleep 10
+    pgrep $target > /dev/null
+    if [ "$?" -eq 1 ];then
+        lines=$(grep eating "./log_$target" | wc -l)
+        if [ $lines -ge 28 ];then
+            echo "\r\e[92m[+] Test #3 Succeded\e[0m"
+        else
+            echo "\r\e[91m[+] Test #3 Failed\e[0m"
+        fi
     else
-        echo "\e[91m[+] Test #1 Failed !\e[0m"
+        echo "\r\e[91m[+] Test #3 Failed\e[0m"
+        pkill $target
     fi
-    rm -rf "./death_log_$target"
+    rm -rf "./log_$target"
+
+
+    
 fi
-
-
-

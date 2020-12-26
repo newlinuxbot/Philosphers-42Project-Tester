@@ -93,26 +93,50 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
     #     echo "\r\e[92m[+] Test #3 Succeded\e[0m"
     # fi
 
-    #TEST 4
+    # #TEST 4
 
     #Turn into function and pass multiple arguments besides 7
-    echo "\e[92m[+] Test #4 on progress, please wait...\e[0m"
+    echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
     ("$1/$target/$target" 4 410 200 200 7 > "./log_$target")&
     sleep 10
     pgrep $target > /dev/null
     if [ "$?" -eq 1 ];then
         lines=$(grep eating "./log_$target" | wc -l)
         if [ $lines -ge 28 ];then
-            echo "\r\e[92m[+] Test #3 Succeded\e[0m"
+            echo "\e[92m[+] Test #3 Succeded\e[0m"
         else
-            echo "\r\e[91m[+] Test #3 Failed\e[0m"
+            echo "\e[91m[+] Test #3 Failed\e[0m"
         fi
     else
-        echo "\r\e[91m[+] Test #3 Failed\e[0m"
+        echo "\e[91m[+] Test #3 Failed\e[0m"
         pkill $target
     fi
     rm -rf "./log_$target"
 
+    #TEST 5
 
-    
+    echo "\e[94m[+] Test #5 on progress, please wait...\e[0m"
+    i=1
+    t=0
+    while [ $i -le 10 ];do
+        ("$1/$target/$target" 2 60 60 60 > "./log_$target")&
+        sleep 2
+        pgrep $target > /dev/null
+        if [ "$?" -eq 1 ];then
+            printf "\r[%d/10]" $i
+            tmp=$(grep died -m 1 "./log_$target" | awk '{print $1}' | sed 's/[^0-9]*//g')
+            if [ $i -gt 1 ];then
+                if [ $tmp ]
+            else
+                t=tmp
+            fi
+        else
+            printf "\r\e[91m[+] Test #3 Failed\e[0m\n"
+            pkill $target
+            break
+        fi
+        i=$(( $i + 1 ))
+    done
+    echo "\rDone!"
+
 fi

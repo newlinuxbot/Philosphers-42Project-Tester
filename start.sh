@@ -39,7 +39,7 @@ test_one ()
         echo "\e[92m[+] Test #1 Succeeded !\e[0m"
     else
         echo "\e[91m[+] Test #1 Failed !\e[0m"
-        error_log $1 "Test #1" "Given 4 310 200 100 arguments to $1, a philosopher should die"
+        error_log $1 "Test #1" "Given 4 310 200 100 arguments to $1, a philosopher should die !"
     fi
     rm -rf "./log_$1"
 }
@@ -55,6 +55,7 @@ test_two ()
         pgrep $1 > /dev/null
         if [ "$?" -ne 0 ];then
             echo "\r\e[91m[+] Test #2 Failed\e[0m"
+            error_log $1 "Test #2" "Given 4 410 200 200 arguments to $1, no philosopher should die !"
             error=1
             break
         fi
@@ -79,6 +80,7 @@ test_three ()
         pgrep $1 > /dev/null
         if [ "$?" -ne 0 ];then
             echo "\r\e[91m[+] Test #3 Failed\e[0m"
+            error_log $1 "Test #3" "Given 4 800 200 200 arguments to $1, no philosopher should die !"
             error=1
             break
         fi
@@ -103,9 +105,11 @@ test_four ()
             echo "\t\e[92m[+] Test #4-$5 Succeeded\e[0m"
         else
             echo "\t\e[91m[+] Test #4-$5 Failed\e[0m"
+            error_log $1 "Test #4" "Given 4 410 200 200 $3 arguments to $1, $1 should only be stopped if each philosopher ate at least $3 times !"
         fi
     else
         echo "\t\e[91m[+] Test #4-$5 Failed\e[0m"
+        error_log $1 "Test #4" "Given 4 410 200 200 $3 arguments to $1, $1 should stop !"
         pkill $1
     fi
     rm -rf "./log_$1"
@@ -129,6 +133,7 @@ test_five ()
                 x=${x#-}
                 if [ $x -gt 10 ];then
                     printf "\r\e[91m[+] Test #5 Failed\e[0m\n"
+                    error_log $1 "Test #5" "Given 2 60 60 60 arguments to $1, the time difference of each death shouldn't be bigger than 10ms !"
                     error=1
                     break
                 fi
@@ -137,6 +142,7 @@ test_five ()
             fi
         else
             printf "\r\e[91m[+] Test #5 Failed\e[0m\n"
+            error_log $1 "Test #5" "Given 2 60 60 60 arguments to $1, a philosopher should die !"
             pkill $1
             break
         fi
@@ -157,6 +163,7 @@ test_six ()
         printf "\r\e[92m[+] Test #6 Succeeded\e[0m\n"
     else
         printf "\r\e[91m[+] Test #6 Failed\e[0m\n"
+        error_log $1 "Test #6" "Given 10 410 200 200 arguments to $1, 10 processes should be forked, each process for a philosopher !"
     fi
     pkill $1
 }

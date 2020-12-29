@@ -2,7 +2,7 @@
 
 A script to test your Philosopher Project programs, philo_one, philo_two and philo_three.
 
-it only tests your programs by giving them specific arguments, and it doesn't check protection against scrambled output whatsoever... 
+it only tests your programs by giving them specific arguments, and it doesn't check protection against scrambled output etc... 
 
 ## Preview
 

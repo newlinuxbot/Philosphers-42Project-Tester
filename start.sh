@@ -72,7 +72,7 @@ test_two ()
 test_three ()
 {
     echo "\e[94m[+] Test #3: Executing your program for 180 second, please wait...\e[0m"
-    ("$2/$1/$1" 4 800 200 200 > /dev/null)&
+    ("$2/$1/$1" 5 800 200 200 > /dev/null)&
     i=1
     error=0
     while [ $i -lt 180 ];do

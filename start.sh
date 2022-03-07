@@ -1,21 +1,21 @@
 #!/bin/zsh
 
-echo '\e[91m _____ _   _ _                 _                  _____        _           
-|  _  | |_|_| |___ ___ ___ ___| |_ ___ ___ ___   |_   _|__ ___| |_ ___ ___ 
+echo '\e[91m _____ _   _ _                 _                  _____        _
+|  _  | |_|_| |___ ___ ___ ___| |_ ___ ___ ___   |_   _|__ ___| |_ ___ ___
 |   __|   | | | . |_ -| . | . |   | -_|  _|_ -|    | || -_|_ -|  _| -_|  _|
-|__|  |_|_|_|_|___|___|___|  _|_|_|___|_| |___|    |_||___|___|_| |___|_|  
+|__|  |_|_|_|_|___|___|___|  _|_|_|___|_| |___|    |_||___|___|_| |___|_|
                           |_|                                              \e[0m\n'
 
 if [ "$#" -ne 2 ]; then
     echo "Usage: start.sh <Project Folder> <Test Type>"
-    echo "\tType 0: test philo_one, philo_two and philo_three"
-    echo "\tType 1: test philo_one only"
-    echo "\tType 2: test philo_two only"
-    echo "\tType 3: test philo_three only"
+    echo "\tType 0: test philo, and philo_bonus"
+    echo "\tType 1: test philo only"
+    echo "\tType 2: test philo_bonus only"
+
     exit
 fi
 
-if [ "$2" -gt 3 -o "$2" -lt 0 ]; then
+if [ "$2" -gt 2 -o "$2" -lt 0 ]; then
     echo "[Error]: Wrong Arguments"
     exit
 fi
@@ -35,7 +35,7 @@ test_one ()
     sleep 5
     pkill $1
     output=$(grep died -m 1 "./log_$1" | awk '{print $NF}')
-    if [ $output = "died" ];then
+    if [ "$output" = "died" ];then
         echo "\e[92m[+] Test #1 Succeeded !\e[0m"
     else
         echo "\e[91m[+] Test #1 Failed !\e[0m"
@@ -148,7 +148,7 @@ test_five ()
         fi
         i=$(( $i + 1 ))
     done
-    
+
     if [ $error -eq 0 ];then
         echo "\r\e[92m[+] Test #5 Succeeded\e[0m"
     fi
@@ -170,9 +170,9 @@ test_six ()
 
 if [ "$2" -eq 1 -o "$2" -eq 0 ];then
 
-    echo "[============[Testing philo_one]==============]\n"
+    echo "[============[Testing philo]==============]\n"
 
-    target="philo_one"
+    target="philo"
     make -C "$1/$target" > /dev/null
 
     if [ "$?" -ne 0 ];then
@@ -181,11 +181,11 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
     fi
 
     test_one $target $1
-    
+
     test_two $target $1
 
     test_three $target $1
-    
+
     echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
     test_four $target $1 7 28 1
     test_four $target $1 10 40 2
@@ -198,9 +198,9 @@ fi
 
 if [ "$2" -eq 2 -o "$2" -eq 0 ];then
 
-    echo "\n[============[Testing philo_two]==============]\n"
+    echo "\n[============[Testing philo_bonus]==============]\n"
 
-    target="philo_two"
+    target="philo_bonus"
     make -C "$1/$target" > /dev/null
 
     if [ "$?" -ne 0 ];then
@@ -209,39 +209,11 @@ if [ "$2" -eq 2 -o "$2" -eq 0 ];then
     fi
 
     test_one $target $1
-    
+
     test_two $target $1
 
     test_three $target $1
-    
-    echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
-    test_four $target $1 7 28 1
-    test_four $target $1 10 40 2
-    test_four $target $1 12 48 3
-    test_four $target $1 15 60 4
 
-    test_five $target $1
-    rm -rf "./log_$target"
-fi
-
-if [ "$2" -eq 3 -o "$2" -eq 0 ];then
-
-    echo "\n[============[Testing philo_three]==============]\n"
-
-    target="philo_three"
-    make -C "$1/$target" > /dev/null
-
-    if [ "$?" -ne 0 ];then
-        echo "\n[+] There's a problem while compiling $target, please recheck your inputs"
-        exit
-    fi
-
-    test_one $target $1
-    
-    test_two $target $1
-
-    test_three $target $1
-    
     echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
     test_four $target $1 7 28 1
     test_four $target $1 10 40 2

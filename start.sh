@@ -80,7 +80,7 @@ test_three ()
         pgrep $1 > /dev/null
         if [ "$?" -ne 0 ];then
             echo "\r\e[91m[+] Test #3 Failed\e[0m"
-            error_log $1 "Test #3" "Given 4 800 200 200 arguments to $1, no philosopher should die !"
+            error_log $1 "Test #3" "Given 5 800 200 200 arguments to $1, no philosopher should die !"
             error=1
             break
         fi

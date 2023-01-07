@@ -213,6 +213,22 @@ if [ "$targets" -eq 1 -o "$targets" -eq 0 ];then
                 3)
                     test_three $target $root_dir
                     ;;
+                4-1)
+                    echo "\e[94m[+] Test #4-1 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 7 1
+                    ;;
+                4-2)
+                    echo "\e[94m[+] Test #4-2 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 10 2
+                    ;;
+                4-3)
+                    echo "\e[94m[+] Test #4-3 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 12 3
+                    ;;
+                4-4)
+                    echo "\e[94m[+] Test #4-4 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 15 4
+                    ;;
                 4)
                     echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
                     test_four $target $root_dir 7 28 1
@@ -268,6 +284,22 @@ if [ "$targets" -eq 2 -o "$targets" -eq 0 ];then
                     ;;
                 3)
                     test_three $target $root_dir
+                    ;;
+                4-1)
+                    echo "\e[94m[+] Test #4-1 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 7 1
+                    ;;
+                4-2)
+                    echo "\e[94m[+] Test #4-2 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 10 2
+                    ;;
+                4-3)
+                    echo "\e[94m[+] Test #4-3 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 12 3
+                    ;;
+                4-4)
+                    echo "\e[94m[+] Test #4-4 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 15 4
                     ;;
                 4)
     echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"

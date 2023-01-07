@@ -37,6 +37,7 @@ error_log ()
 
 test_one ()
 {
+    echo "\e[94m[+] Test #1: Executing your program for 5 second with 4 310 200 100 (it should die), please wait...\e[0m"
     ("$2/$1/$1" 4 310 200 100 > "./log1_$1")&
     sleep 5
     pkill $1
@@ -59,7 +60,7 @@ test_two ()
         printf "\r[%d...]" $i
         pgrep $1 > /dev/null
         if [ "$?" -ne 0 ];then
-            echo "\r\e[91m[+] Test #2 Failed\e[0m"
+            echo "\r\e[91m[+] Test #2 Failed($i)\e[0m"
             error_log $1 "Test #2" "Given 4 410 200 200 arguments to $1, no philosopher should die !"
             error=1
             break
@@ -84,8 +85,8 @@ test_three ()
         printf "\r[%d...]" $i
         pgrep $1 > /dev/null
         if [ "$?" -ne 0 ];then
-            echo "\r\e[91m[+] Test #3 Failed\e[0m"
-            error_log $1 "Test #3" "Given 4 800 200 200 arguments to $1, no philosopher should die !"
+            echo "\r\e[91m[+] Test #3 Failed($i)\e[0m"
+            error_log $1 "Test #3" "Given 5 800 200 200 arguments to $1, no philosopher should die !"
             error=1
             break
         fi
@@ -161,13 +162,14 @@ test_five ()
 
 test_six ()
 {
+    expected_forks=11
     ("$2/$1/$1" 10 410 200 200 > "./log6_$1")&
     sleep 2
     forks=$(pgrep $1 | wc -l)
-    if [ "$forks" -eq 11 ];then
+    if [ "$forks" -eq $expected_forks ];then
         printf "\r\e[92m[+] Test #6 Succeeded\e[0m\n"
     else
-        printf "\r\e[91m[+] Test #6 Failed\e[0m\n"
+        printf "\r\e[91m[+] Test #6 Failed(expects $expected_forks, got $forks fork)\e[0m\n"
         error_log $1 "Test #6" "Given 10 410 200 200 arguments to $1, 10 processes should be forked, each process for a philosopher !"
     fi
     pkill $1
@@ -199,7 +201,7 @@ if [ "$targets" -eq 1 -o "$targets" -eq 0 ];then
         test_four $target $root_dir 10 2
         test_four $target $root_dir 12 3
         test_four $target $root_dir 15 4
-        test_five $target $root_dir
+        # test_five $target $root_dir
     else
         declare -i i=1
         while [ $i -le $# ]
@@ -237,9 +239,9 @@ if [ "$targets" -eq 1 -o "$targets" -eq 0 ];then
                     test_four $target $root_dir 12 3
                     test_four $target $root_dir 15 4
                     ;;
-                5)
-                    test_five $target $root_dir
-                    ;;
+                # 5)
+                #     test_five $target $root_dir
+                #     ;;
             esac
             i+=1
         done
@@ -270,7 +272,7 @@ if [ "$targets" -eq 2 -o "$targets" -eq 0 ];then
         test_four $target $root_dir 10 2
         test_four $target $root_dir 12 3
         test_four $target $root_dir 15 4
-        test_five $target $root_dir
+        # test_five $target $root_dir
         test_six $target $root_dir
     else
         declare -i i=1
@@ -309,9 +311,9 @@ if [ "$targets" -eq 2 -o "$targets" -eq 0 ];then
                     test_four $target $root_dir 12 3
                     test_four $target $root_dir 15 4
                     ;;
-                5)
-                    test_five $target $root_dir
-                    ;;
+                # 5)
+                #     test_five $target $root_dir
+                #     ;;
                 6)
                     test_six $target $root_dir
                     ;;

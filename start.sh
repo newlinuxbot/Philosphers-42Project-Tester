@@ -6,8 +6,8 @@ echo '\e[91m _____ _   _ _                 _                  _____        _
 |__|  |_|_|_|_|___|___|___|  _|_|_|___|_| |___|    |_||___|___|_| |___|_|
                           |_|                                              \e[0m\n'
 
-if [ "$#" -ne 2 ]; then
-    echo "Usage: start.sh <Project Folder> <Test Type>"
+if [ "$#" -lt 2 ]; then
+    echo "Usage: start.sh <Project Folder> <Test Type> [0-6]*"
     echo "\tType 0: test philo, and philo_bonus"
     echo "\tType 1: test philo only"
     echo "\tType 2: test philo_bonus only"
@@ -172,7 +172,11 @@ test_six ()
     pkill $1
 }
 
-if [ "$2" -eq 1 -o "$2" -eq 0 ];then
+root_dir=$1
+targets=$2
+shift 2
+
+if [ "$targets" -eq 1 -o "$targets" -eq 0 ];then
 
     echo "[============[Testing philo]==============]\n"
 
@@ -184,48 +188,104 @@ if [ "$2" -eq 1 -o "$2" -eq 0 ];then
         exit
     fi
 
-    test_one $target $1
-
-    test_two $target $1
-
-    test_three $target $1
-
+    if [ $# -eq "0" ]
+    then
+        test_one $target $root_dir
+        test_two $target $root_dir
+        test_three $target $root_dir
     echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
-    test_four $target $1 7 28 1
-    test_four $target $1 10 40 2
-    test_four $target $1 12 48 3
-    test_four $target $1 15 60 4
+        test_four $target $root_dir 7 28 1
+        test_four $target $root_dir 10 40 2
+        test_four $target $root_dir 12 48 3
+        test_four $target $root_dir 15 60 4
+        test_five $target $root_dir
+    else
+        declare -i i=1
+        while [ $i -le $# ]
+        do
+            case ${(P)i} in
+                1) 
+                    test_one $target $root_dir
+                    ;;
+                2)
+                    test_two $target $root_dir
+                    ;;
+                3)
+                    test_three $target $root_dir
+                    ;;
+                4)
+                    echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 7 28 1
+                    test_four $target $root_dir 10 40 2
+                    test_four $target $root_dir 12 48 3
+                    test_four $target $root_dir 15 60 4
+                    ;;
+                5)
+                    test_five $target $root_dir
+                    ;;
+            esac
+            i+=1
+        done
+    fi
 
-    test_five $target $1
     rm -rf "./log_$target"
 fi
 
-if [ "$2" -eq 2 -o "$2" -eq 0 ];then
+if [ "$targets" -eq 2 -o "$targets" -eq 0 ];then
 
     echo "\n[============[Testing philo_bonus]==============]\n"
 
     target="philo_bonus"
-    make -C "$1/$target" > /dev/null
+    make -C "$root_dir/$target" re
 
     if [ "$?" -ne 0 ];then
         echo "\n[+] There's a problem while compiling $target, please recheck your inputs"
         exit
     fi
 
-    test_one $target $1
-
-    test_two $target $1
-
-    test_three $target $1
-
+    if [ $# -eq 0 ]
+    then
+        test_one $target $root_dir
+        test_two $target $root_dir
+        test_three $target $root_dir
+        echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
+        test_four $target $root_dir 7 28 1
+        test_four $target $root_dir 10 40 2
+        test_four $target $root_dir 12 48 3
+        test_four $target $root_dir 15 60 4
+        test_five $target $root_dir
+        test_six $target $root_dir
+    else
+        declare -i i=1
+        while [ $i -le $# ]
+        do
+            case ${(P)i} in
+                1) 
+                    test_one $target $root_dir
+                    ;;
+                2)
+                    test_two $target $root_dir
+                    ;;
+                3)
+                    test_three $target $root_dir
+                    ;;
+                4)
     echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
-    test_four $target $1 7 28 1
-    test_four $target $1 10 40 2
-    test_four $target $1 12 48 3
-    test_four $target $1 15 60 4
+                    test_four $target $root_dir 7 28 1
+                    test_four $target $root_dir 10 40 2
+                    test_four $target $root_dir 12 48 3
+                    test_four $target $root_dir 15 60 4
+                    ;;
+                5)
+                    test_five $target $root_dir
+                    ;;
+                6)
+                    test_six $target $root_dir
+                    ;;
+            esac
+            i+=1
+        done
+    fi
 
-    test_five $target $1
-
-    test_six $target $1
     rm -rf "./log_$target"
 fi

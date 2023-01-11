@@ -101,20 +101,21 @@ test_three ()
 
 test_four ()
 {
-    ("$2/$1/$1" 4 410 200 200 $3 > "./log4_$4_$1")&
+    declare -i number_of_philos=4
+    ("$2/$1/$1" $number_of_philos 410 200 200 $3 > "./log4_$4_$1")&
     sleep 10
     pgrep $1 > /dev/null
     if [ "$?" -eq 1 ];then
         lines=$(grep eating "./log4_$4_$1" | wc -l)
-        if [ $lines -ge $(($3 * 4)) ];then
+        if [ $lines -ge $(($3 * $number_of_philos)) ];then
             echo "\t\e[92m[+] Test #4-$4 Succeeded\e[0m"
         else
-            echo "\t\e[91m[+] Test #4-$5 Failed\e[0m"
-            error_log $1 "Test #4" "Given 4 410 200 200 $3 arguments to $1, $1 should only be stopped if each philosopher ate at least $3 times !"
+            echo "\t\e[91m[+] Test #4-$4 Failed\e[0m"
+            error_log $1 "Test #4" "Given $number_of_philos 410 200 200 $3 arguments to $1, $1 should only be stopped if each philosopher ate at least $3 times !"
         fi
     else
-        echo "\t\e[91m[+] Test #4-$5 Failed\e[0m"
-        error_log $1 "Test #4" "Given 4 410 200 200 $3 arguments to $1, $1 should stop !"
+        echo "\t\e[91m[+] Test #4-$4 Failed\e[0m"
+        error_log $1 "Test #4" "Given $number_of_philos 410 200 200 $3 arguments to $1, $1 should stop !"
         pkill $1
     fi
 }
@@ -193,11 +194,11 @@ if [ "$targets" -eq 1 -o "$targets" -eq 0 ];then
         test_one $target $root_dir
         test_two $target $root_dir
         test_three $target $root_dir
-    echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
-        test_four $target $root_dir 7 28 1
-        test_four $target $root_dir 10 40 2
-        test_four $target $root_dir 12 48 3
-        test_four $target $root_dir 15 60 4
+        echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
+        test_four $target $root_dir 7 1
+        test_four $target $root_dir 10 2
+        test_four $target $root_dir 12 3
+        test_four $target $root_dir 15 4
         test_five $target $root_dir
     else
         declare -i i=1
@@ -231,10 +232,10 @@ if [ "$targets" -eq 1 -o "$targets" -eq 0 ];then
                     ;;
                 4)
                     echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
-                    test_four $target $root_dir 7 28 1
-                    test_four $target $root_dir 10 40 2
-                    test_four $target $root_dir 12 48 3
-                    test_four $target $root_dir 15 60 4
+                    test_four $target $root_dir 7 1
+                    test_four $target $root_dir 10 2
+                    test_four $target $root_dir 12 3
+                    test_four $target $root_dir 15 4
                     ;;
                 5)
                     test_five $target $root_dir
@@ -265,10 +266,10 @@ if [ "$targets" -eq 2 -o "$targets" -eq 0 ];then
         test_two $target $root_dir
         test_three $target $root_dir
         echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
-        test_four $target $root_dir 7 28 1
-        test_four $target $root_dir 10 40 2
-        test_four $target $root_dir 12 48 3
-        test_four $target $root_dir 15 60 4
+        test_four $target $root_dir 7 1
+        test_four $target $root_dir 10 2
+        test_four $target $root_dir 12 3
+        test_four $target $root_dir 15 4
         test_five $target $root_dir
         test_six $target $root_dir
     else
@@ -302,11 +303,11 @@ if [ "$targets" -eq 2 -o "$targets" -eq 0 ];then
                     test_four $target $root_dir 15 4
                     ;;
                 4)
-    echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
-                    test_four $target $root_dir 7 28 1
-                    test_four $target $root_dir 10 40 2
-                    test_four $target $root_dir 12 48 3
-                    test_four $target $root_dir 15 60 4
+                    echo "\e[94m[+] Test #4 on progress, please wait...\e[0m"
+                    test_four $target $root_dir 7 1
+                    test_four $target $root_dir 10 2
+                    test_four $target $root_dir 12 3
+                    test_four $target $root_dir 15 4
                     ;;
                 5)
                     test_five $target $root_dir
